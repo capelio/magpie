@@ -1,0 +1,27 @@
+{
+  "name": "magpie",
+  "version": "0.0.1",
+  "description": "Simple persistence for rapid prototyping, powered by leveldb",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:capelio/magpie.git"
+  },
+  "keywords": [
+    "db",
+    "database",
+    "datastore",
+    "store",
+    "storage",
+    "json",
+    "leveldb"
+  ],
+  "author": "C. Corey Capel",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/capelio/magpie/issues"
+  }
+}
