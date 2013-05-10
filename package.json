@@ -1,7 +1,7 @@
 {
   "name": "magpie",
   "version": "0.0.1",
-  "description": "Simple persistence for rapid prototyping, powered by leveldb",
+  "description": "Simple persistence for rapid prototyping. Powered by leveldb.",
   "main": "index.js",
   "scripts": {
     "test": "mocha"

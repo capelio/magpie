@@ -1,7 +1,7 @@
 Magpie
 ======
 
-Simple persistence for rapid prototyping, powered by leveldb.
+Simple persistence for rapid prototyping. Powered by leveldb.
 
 ![magpie image](http://www.capelio.com/images/magpie.png)
 
