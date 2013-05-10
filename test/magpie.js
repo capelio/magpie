@@ -10,7 +10,7 @@ var should = require('should'),
  * Fixtures
  */
 
-var stashPath = './collection';
+var stashPath = './stash';
 
 var theOatmealBook = {
 	title: "How to Tell If Your Cat Is Plotting to Kill You",
