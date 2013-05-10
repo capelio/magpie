@@ -23,5 +23,12 @@
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/capelio/magpie/issues"
+  },
+  "dependencies": {
+    "levelup": "~0.8.0",
+    "lodash": "~1.2.1"
+  },
+  "devDependencies": {
+    "mocha": "~1.9.0"
   }
 }
