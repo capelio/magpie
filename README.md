@@ -1,7 +1,7 @@
 Magpie
 ======
 
-Simple persistence for rapid prototyping. Powered by leveldb.
+Simple persistence for rapid prototyping. Powered by [levelup](https://github.com/rvagg/node-levelup).
 
 ![magpie image](http://www.capelio.com/images/magpie.png)
 
