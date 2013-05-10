@@ -5,9 +5,7 @@ Simple persistence for rapid prototyping, powered by leveldb.
 
 ![magpie image](http://www.capelio.com/images/magpie.png)
 
-This is my first Node.js module. Currently, the module is in the very early stages of development. Implementation of the API is ongoing.
-
-**This module is NOT production ready.**
+This is my first Node.js module. Currently, the module is in the very early stages of development. Implementation of the API is ongoing. **Take note: this module is NOT production ready.**
 
 Basic usage
 -----------
@@ -26,7 +24,8 @@ favoriteThings.create(theOatmealBook, function(err, record) {
 	// {
 	//   "id": "7f5d532b-8bfe-42fd-a1d3-8272e8aa7e3f",
 	//   "title": "How to Tell If Your Cat Is Plotting to Kill You",
-	//   "author": "TheOatmeal.com"
+	//   "author": "TheOatmeal.com",
+	//   "createdOn": "2013-05-10T20:30:25.342Z"
 	// }
 });
 ```
