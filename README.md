@@ -12,7 +12,7 @@ Basic usage
 
 ```js
 var magpie = require('magpie'),
-	db = magpie('./db/favoriteThings');
+	db = magpie('./db');
 
 var theOatmealBook = {
 	title: "How to Tell If Your Cat Is Plotting to Kill You",
