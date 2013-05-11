@@ -90,6 +90,27 @@ db.get(query, function(error, record) {
 
 ### db.update(data _object_ [, callback]);
 
+```js
+var theOatmealBook = {
+	"id": "7f5d532b-8bfe-42fd-a1d3-8272e8aa7e3f",
+	"title": "How to Tell If Your Cat Is Plotting to Kill You",
+	"author": "TheOatmeal.com",
+	"isbn10": "1449410243",
+	"createdOn": "2013-05-10T20:30:25.342Z"
+}
+db.update(theOatmealBook, function(error, record) {
+	// Returns
+	{
+		"id": "7f5d532b-8bfe-42fd-a1d3-8272e8aa7e3f",
+		"title": "How to Tell If Your Cat Is Plotting to Kill You",
+		"author": "TheOatmeal.com",
+		"isbn10": "1449410243",
+		"createdOn": "2013-05-10T20:30:25.342Z",
+		"updatedOn": "2013-05-11T12:45:50.700Z"
+	}
+});
+```
+
 ### db.destroy(id _string_ | query _object_ [, callback]);
 
 License
