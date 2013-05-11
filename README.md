@@ -12,14 +12,14 @@ Basic usage
 
 ```js
 var magpie = require('magpie'),
-	favoriteThings = magpie('./db/favoriteThings');
+	db = magpie('./db/favoriteThings');
 
 var theOatmealBook = {
 	title: "How to Tell If Your Cat Is Plotting to Kill You",
 	author: "TheOatmeal.com"
 };
 
-favoriteThings.create(theOatmealBook, function(err, record) {
+db.create(theOatmealBook, function(err, record) {
 	// Returns:
 	// {
 	//   "id": "7f5d532b-8bfe-42fd-a1d3-8272e8aa7e3f",
@@ -44,10 +44,50 @@ Magpie is happy to generate IDs for you via [node-uuid's](https://github.com/bro
 
 If you'd like to supply your own IDs, go for it. Just include an `id` property on your `data` object.
 
-### db.fetch(query[, callback]);
+### db.get([query, ]callback);
 
-- fetching by ID
-- fetching by query object
+```js
+// Get all records
+db.get(function(error, records) {
+	// Returns:
+	// [{
+	//   "id": "7f5d532b-8bfe-42fd-a1d3-8272e8aa7e3f",
+	//   "title": "How to Tell If Your Cat Is Plotting to Kill You",
+	//   "author": "TheOatmeal.com",
+	//   "createdOn": "2013-05-10T20:30:25.342Z"
+	// }, {
+	//   ...
+	// }]
+});
+
+// Get a record by ID
+db.get("7f5d532b-8bfe-42fd-a1d3-8272e8aa7e3f", function(error, record) {
+  // Returns:
+  // {
+	//   "id": "7f5d532b-8bfe-42fd-a1d3-8272e8aa7e3f",
+	//   "title": "How to Tell If Your Cat Is Plotting to Kill You",
+	//   "author": "TheOatmeal.com",
+	//   "createdOn": "2013-05-10T20:30:25.342Z"
+	// }
+});
+
+// Get a record by ID as a query object property
+var query = {
+	id: "7f5d532b-8bfe-42fd-a1d3-8272e8aa7e3f"
+};
+db.get(query, function(error, record) {
+  // Returns:
+  // {
+	//   "id": "7f5d532b-8bfe-42fd-a1d3-8272e8aa7e3f",
+	//   "title": "How to Tell If Your Cat Is Plotting to Kill You",
+	//   "author": "TheOatmeal.com",
+	//   "createdOn": "2013-05-10T20:30:25.342Z"
+	// }
+});
+```
+
+- getting by ID
+- getting by query object
 
 ### db.update(data[, callback]);
 
