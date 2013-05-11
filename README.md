@@ -41,43 +41,50 @@ Magpie is happy to generate IDs for you via [node-uuid's](https://github.com/bro
 
 ### db.get([id _string_ | query _object_, ] callback);
 
+Get all records:
+
 ```js
-// Get all records
 db.get(function(error, records) {
 	// Returns:
-	// [{
-	//   "id": "7f5d532b-8bfe-42fd-a1d3-8272e8aa7e3f",
-	//   "title": "How to Tell If Your Cat Is Plotting to Kill You",
-	//   "author": "TheOatmeal.com",
-	//   "createdOn": "2013-05-10T20:30:25.342Z"
-	// }, {
-	//   ...
-	// }]
+	[{
+	  "id": "7f5d532b-8bfe-42fd-a1d3-8272e8aa7e3f",
+	  "title": "How to Tell If Your Cat Is Plotting to Kill You",
+	  "author": "TheOatmeal.com",
+	  "createdOn": "2013-05-10T20:30:25.342Z"
+	}, {
+	  ...
+	}]
 });
+```
 
-// Get a record by ID
+Get a record by ID:
+
+```js
 db.get("7f5d532b-8bfe-42fd-a1d3-8272e8aa7e3f", function(error, record) {
-  // Returns:
-  // {
-	//   "id": "7f5d532b-8bfe-42fd-a1d3-8272e8aa7e3f",
-	//   "title": "How to Tell If Your Cat Is Plotting to Kill You",
-	//   "author": "TheOatmeal.com",
-	//   "createdOn": "2013-05-10T20:30:25.342Z"
-	// }
+	// Returns:
+	{
+	  "id": "7f5d532b-8bfe-42fd-a1d3-8272e8aa7e3f",
+	  "title": "How to Tell If Your Cat Is Plotting to Kill You",
+	  "author": "TheOatmeal.com",
+	  "createdOn": "2013-05-10T20:30:25.342Z"
+	}
 });
+```
 
-// Get a record by ID as a query object property
+Get a record by ID using a query object:
+
+```
 var query = {
 	id: "7f5d532b-8bfe-42fd-a1d3-8272e8aa7e3f"
 };
 db.get(query, function(error, record) {
-  // Returns:
-  // {
-	//   "id": "7f5d532b-8bfe-42fd-a1d3-8272e8aa7e3f",
-	//   "title": "How to Tell If Your Cat Is Plotting to Kill You",
-	//   "author": "TheOatmeal.com",
-	//   "createdOn": "2013-05-10T20:30:25.342Z"
-	// }
+	// Returns:
+	{
+		"id": "7f5d532b-8bfe-42fd-a1d3-8272e8aa7e3f",
+		"title": "How to Tell If Your Cat Is Plotting to Kill You",
+		"author": "TheOatmeal.com",
+		"createdOn": "2013-05-10T20:30:25.342Z"
+	}
 });
 ```
 
