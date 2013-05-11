@@ -5,15 +5,15 @@ var fs = require('fs'),
 
 var connections = {};
 
-var createConnection = function(dbPath) {
-	function getConnection(dbPath) {
-		if (connections[dbPath]) return connections[dbPath];
-		connections[dbPath] = levelup(dbPath, {
-			valueEncoding: 'json'
-		});
-		return connections[dbPath];
-	}
+function getConnection(dbPath) {
+	if (connections[dbPath]) return connections[dbPath];
+	connections[dbPath] = levelup(dbPath, {
+		valueEncoding: 'json'
+	});
+	return connections[dbPath];
+}
 
+var createConnection = function(dbPath) {
 	function Connection(dbPath) {
 		this.dbPath = dbPath;
 	}
