@@ -68,7 +68,7 @@ var createConnection = function(dbPath) {
 			});
 
 		// Get records using query object
-		} else if ((!_.has('id') && !_.isEmpty(query)) && _.isFunction(callback)) {
+		} else if ((!_.has(query, 'id') && !_.isEmpty(query)) && _.isFunction(callback)) {
 			callback(new Error('Get using query object not yet implemented.'));
 
 		// Invalid arguments
