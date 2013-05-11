@@ -1,42 +1,41 @@
 var fs = require('fs'),
 	levelup = require('levelup'),
+	_ = require('lodash'),
 	uuid = require('node-uuid');
 
-var connections = connections || {};
+var connections = {};
 
-var createStash = function(stashPath) {
+var createStash = function(dbPath) {
 	var stash;
 
-	function getConnection(stashPath) {
-		if (connections[stashPath]) return connections[stashPath];
-		connections[stashPath] = levelup(stashPath, {
+	function getConnection(dbPath) {
+		if (connections[dbPath]) return connections[dbPath];
+		connections[dbPath] = levelup(dbPath, {
 			valueEncoding: 'json'
 		});
-		return connections[stashPath];
+		return connections[dbPath];
 	}
 
-	function Stash(stashPath) {
-		this.stashPath = stashPath;
+	function Stash(dbPath) {
+		this.dbPath = dbPath;
 	}
 
 	Stash.prototype.open = function() {
-		var exists = fs.existsSync(this.stashPath);
-		if (!exists) fs.mkdirSync(this.stashPath);
-		this.stash = getConnection(this.stashPath);
+		this.connection = getConnection(this.dbPath);
 	};
 
 	Stash.prototype.create = function(data, callback) {
 		if (!data.id) data.id = uuid.v4();
 
 		var that = this;
-		this.stash.put(data.id, data, function(error) {
+		this.connection.put(data.id, data, function(error) {
 			if (error && callback) {
 				return callback(error);
 			} else if (error) {
 				throw new Error('Could not create data.');
 			}
 
-			that.get(data.id, function(error, record) {
+			that.getById(data.id, function(error, record) {
 				if (error && callback) {
 					return callback(error);
 				} else if (error) {
@@ -48,22 +47,46 @@ var createStash = function(stashPath) {
 		});
 	};
 
-	Stash.prototype.put = function(key, value, callback) {
-		this.stash.put(key, value, function(error) {
-			if (error) {
-				return callback(error);
+	Stash.prototype.get = function(query, callback) {
+		// Get all records
+		if (arguments.length === 1 && _.isFunction(query)) {
+			callback = query;
+			this.getAll(function(error, records) {
+				if (error) return callback(error);
+				callback(null, records);
+			});
+
+		// Get one record by ID
+		} else if ((_.isString(query) || _.has(query, 'id')) && _.isFunction(callback)) {
+			var key = query.id || query;
+
+			this.getById(key, function(error, record) {
+				if (error) return callback(error);
+				callback(null, record);
+			});
+
+		// Get records using query object
+		} else if ((!_.has('id') && !_.isEmpty(query)) && _.isFunction(callback)) {
+			callback(new Error('Get using query object not yet implemented.'));
+
+		// Invalid arguments
+		} else {
+			var error = new Error('Invalid arguments.');
+			if (callback) {
+				callback(error);
+			} else {
+				throw error;
 			}
-			callback(null);
-		});
+		}
 	};
 
-	Stash.prototype.get = function(key, callback) {
-		this.stash.get(key, function(error, record) {
-			if (error && error.name === 'NotFoundError') {
-				return callback(null, null);
+	Stash.prototype.getById = function(key, callback) {
+		this.connection.get(key, function(error, record) {
+			if (error && error.name !== 'NotFoundError') {
+				return callback(error);
 			}
 			if (error) {
-				return callback(error);
+				return callback(null, null);
 			}
 			callback(null, record);
 		});
@@ -71,43 +94,19 @@ var createStash = function(stashPath) {
 
 	Stash.prototype.getAll = function(callback) {
 		var allRecords = [];
-		this.stash.createValueStream()
+		this.connection.createValueStream()
 			.on('error', function(error) {
-			callback(error);
-		})
+				callback(error);
+			})
 			.on('data', function(record) {
-			allRecords.push(record);
-		})
+				allRecords.push(record);
+			})
 			.on('end', function() {
-			callback(null, allRecords);
-		});
+				callback(null, allRecords);
+			});
 	};
 
-	Stash.prototype.del = function(key, callback) {
-		this.stash.del(key, function(error) {
-			if (error && error.name === 'NotFoundError') {
-				return callback(null);
-			}
-			if (error) {
-				return callback(error);
-			}
-			callback(null);
-		});
-	};
-
-	Stash.prototype.exists = function(key, callback) {
-		this.stash.get(key, function(error) {
-			if (error && error.name === 'NotFoundError') {
-				return callback(null, false);
-			}
-			if (error) {
-				return callback(error);
-			}
-			callback(null, true);
-		});
-	};
-
-	stash = new Stash(stashPath);
+	stash = new Stash(dbPath);
 	stash.open();
 	return stash;
 };
