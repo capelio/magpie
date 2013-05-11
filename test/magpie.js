@@ -87,4 +87,8 @@ describe('Magpie', function() {
 			});
 		});
 	});
+
+	after(function() {
+		db.close();
+	})
 });
