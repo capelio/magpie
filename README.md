@@ -37,12 +37,7 @@ API
 
 ### db.create(data _object_ [, callback]);
 
-- creating without an ID
-- creating with an ID
-
-Magpie is happy to generate IDs for you via [node-uuid's](https://github.com/broofa/node-uuid) `uuid.v4()` method.
-
-If you'd like to supply your own IDs, go for it. Just include an `id` property on your `data` object.
+Magpie is happy to generate IDs for you via [node-uuid's](https://github.com/broofa/node-uuid) `uuid.v4()` method. If you'd like to supply your own IDs, go for it. Just include an `id` property on your `data` object.
 
 ### db.get([id _string_ | query _object_, ] callback);
 
