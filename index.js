@@ -5,9 +5,7 @@ var fs = require('fs'),
 
 var connections = {};
 
-var createStash = function(dbPath) {
-	var stash;
-
+var createConnection = function(dbPath) {
 	function getConnection(dbPath) {
 		if (connections[dbPath]) return connections[dbPath];
 		connections[dbPath] = levelup(dbPath, {
@@ -16,19 +14,19 @@ var createStash = function(dbPath) {
 		return connections[dbPath];
 	}
 
-	function Stash(dbPath) {
+	function Connection(dbPath) {
 		this.dbPath = dbPath;
 	}
 
-	Stash.prototype.open = function() {
+	Connection.prototype.open = function() {
 		this.connection = getConnection(this.dbPath);
 	};
 
-	Stash.prototype.close = function() {
+	Connection.prototype.close = function() {
 		this.connection.close();
 	};
 
-	Stash.prototype.create = function(data, callback) {
+	Connection.prototype.create = function(data, callback) {
 		if (!data.id) data.id = uuid.v4();
 
 		var that = this;
@@ -51,7 +49,7 @@ var createStash = function(dbPath) {
 		});
 	};
 
-	Stash.prototype.get = function(query, callback) {
+	Connection.prototype.get = function(query, callback) {
 		// Get all records
 		if (arguments.length === 1 && _.isFunction(query)) {
 			callback = query;
@@ -84,7 +82,7 @@ var createStash = function(dbPath) {
 		}
 	};
 
-	Stash.prototype.getById = function(key, callback) {
+	Connection.prototype.getById = function(key, callback) {
 		this.connection.get(key, function(error, record) {
 			if (error && error.name !== 'NotFoundError') {
 				return callback(error);
@@ -96,7 +94,7 @@ var createStash = function(dbPath) {
 		});
 	};
 
-	Stash.prototype.getAll = function(callback) {
+	Connection.prototype.getAll = function(callback) {
 		var allRecords = [];
 		this.connection.createValueStream()
 			.on('error', function(error) {
@@ -110,9 +108,9 @@ var createStash = function(dbPath) {
 			});
 	};
 
-	stash = new Stash(dbPath);
-	stash.open();
-	return stash;
+	connection = new Connection(dbPath);
+	connection.open();
+	return connection;
 };
 
-module.exports = createStash;
+module.exports = createConnection;
