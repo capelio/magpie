@@ -44,7 +44,7 @@ Magpie is happy to generate IDs for you via [node-uuid's](https://github.com/bro
 
 If you'd like to supply your own IDs, go for it. Just include an `id` property on your `data` object.
 
-### db.get([id _string_ | query _object_, ]callback);
+### db.get([id _string_ | query _object_, ] callback);
 
 ```js
 // Get all records
