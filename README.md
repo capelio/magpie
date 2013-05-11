@@ -19,7 +19,7 @@ var theOatmealBook = {
 	author: "TheOatmeal.com"
 };
 
-db.create(theOatmealBook, function(err, record) {
+db.create(theOatmealBook, function(error, record) {
 	// Returns:
 	// {
 	//   "id": "7f5d532b-8bfe-42fd-a1d3-8272e8aa7e3f",
@@ -33,9 +33,9 @@ db.create(theOatmealBook, function(err, record) {
 API
 ---
 
-### var db = magpie('filesystem path'[, options]);
+### var db = magpie(path _string_ [, options]);
 
-### db.create(data[, callback]);
+### db.create(data _object_ [, callback]);
 
 - creating without an ID
 - creating with an ID
@@ -44,7 +44,7 @@ Magpie is happy to generate IDs for you via [node-uuid's](https://github.com/bro
 
 If you'd like to supply your own IDs, go for it. Just include an `id` property on your `data` object.
 
-### db.get([id _string_|query _object_, ]callback);
+### db.get([id _string_ | query _object_, ]callback);
 
 ```js
 // Get all records
@@ -86,17 +86,9 @@ db.get(query, function(error, record) {
 });
 ```
 
-- getting by ID
-- getting by query object
+### db.update(data _object_ [, callback]);
 
-### db.update(data[, callback]);
-
-- updating by ID
-- updating without an ID
-
-### db.destroy(id[, callback]);
-
-- destroying by ID
+### db.destroy(id _string_ | query _object_ [, callback]);
 
 License
 -------
