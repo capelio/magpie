@@ -24,6 +24,10 @@ var createStash = function(dbPath) {
 		this.connection = getConnection(this.dbPath);
 	};
 
+	Stash.prototype.close = function() {
+		this.connection.close();
+	};
+
 	Stash.prototype.create = function(data, callback) {
 		if (!data.id) data.id = uuid.v4();
 
