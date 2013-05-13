@@ -111,7 +111,13 @@ db.update(theOatmealBook, function(error, record) {
 });
 ```
 
-### db.destroy(id _string_ | query _object_ [, callback]);
+### db.delete(id _string_ | query _object_ [, callback]);
+
+### db.exists(id _string_, callback);
+
+### db.getById(id _string_, callback);
+
+### db.getAll(callback);
 
 License
 -------
