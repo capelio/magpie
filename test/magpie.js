@@ -112,6 +112,64 @@ describe('Magpie', function() {
 		});
 	});
 
+	describe('#update', function() {
+		// TODO: it should
+		// - return a InvalidArguments error when no ID provided
+		// - return a RecordNotFound error when ID does not exist
+
+		it('should return an error when no ID provided', function(done) {
+			var badRecord = { foo: 'bar' };
+			db.update(badRecord, function(error) {
+				should.exist(error);
+				done();
+			});
+		});
+
+		it('should return an error when an ID does not exist', function(done) {
+			var nonExistantRecord = { id: 'doesNotExist' };
+			db.update(nonExistantRecord, function(error) {
+				should.exist(error);
+				done();
+			});
+		});
+
+		it('should return the updated record', function(done) {
+			db.update(updatedBook, function(error, record) {
+				if (error) throw error;
+				record.should.have.property('isbn10', updatedBook.isbn10);
+				done();
+			});
+		});
+	});
+
+	describe('#delete', function() {
+		// TODO: it should
+		// - return a InvalidArguments error when no ID provided
+		// - return a RecordNotFound error when ID does not exist
+
+	 it('should return an error when no ID provided', function(done) {
+		 db.delete('', function(error, succeeded) {
+			 should.exist(error);
+			 done();
+		 });
+	 });
+
+	 it('should return an error when an ID does not exist', function(done) {
+		 db.delete('doesNotExist', function(error, succeeded) {
+			 should.exist(error);
+			 done();
+		 });
+	 });
+
+	 it('should return true if the delete succeeded', function(done) {
+		 db.delete(updatedBook.id, function(error, succeeded) {
+			 if (error) throw error;
+			 succeeded.should.be.true;
+			 done();
+		 });
+	 });
+	});
+
 	after(function() {
 		db.close();
 	})
