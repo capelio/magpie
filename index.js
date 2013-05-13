@@ -26,25 +26,38 @@ var createConnection = function(dbPath) {
 		this.connection.close();
 	};
 
-	Connection.prototype.create = function(data, callback) {
-		if (!data.id) data.id = uuid.v4();
+	Connection.prototype.create = function(record, callback) {
+		if (!_.isObject(record)) {
+			var invalidArgsError = new Error('Invalid arguments.');
+			if (callback) {
+				return callback(invalidArgsError);
+			} else {
+				throw invalidArgsError;
+			}
+		}
+
+		if (!record.id) record.id = uuid.v4();
 
 		var that = this;
-		this.connection.put(data.id, data, function(error) {
-			if (error && callback) {
-				return callback(error);
-			} else if (error) {
-				throw new Error('Could not create data.');
+		this.connection.put(record.id, record, function(error) {
+			if (error) {
+				if (callback) {
+					return callback(error);
+				} else {
+					throw error;
+				}
 			}
 
-			that.getById(data.id, function(error, record) {
-				if (error && callback) {
-					return callback(error);
-				} else if (error) {
-					throw new Error('Could not get data.');
+			that.getById(record.id, function(error, record) {
+				if (error) {
+					if (callback) {
+						return callback(error);
+					} else {
+						throw error;
+					}
 				}
 				
-				callback(null, record);
+				if (callback) callback(null, record);
 			});
 		});
 	};
