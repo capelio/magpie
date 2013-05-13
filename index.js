@@ -73,9 +73,8 @@ var createConnection = function(dbPath) {
 
 		// Get one record by ID
 		} else if ((_.isString(query) || _.has(query, 'id')) && _.isFunction(callback)) {
-			var key = query.id || query;
-
-			this.getById(key, function(error, record) {
+			var id = query.id || query;
+			this.getById(id, function(error, record) {
 				if (error) return callback(error);
 				callback(null, record);
 			});
@@ -86,17 +85,17 @@ var createConnection = function(dbPath) {
 
 		// Invalid arguments
 		} else {
-			var error = new Error('Invalid arguments.');
+			var invalidArgsError = new Error('Invalid arguments.');
 			if (callback) {
-				callback(error);
+				callback(invalidArgsError);
 			} else {
-				throw error;
+				throw invalidArgsError;
 			}
 		}
 	};
 
-	Connection.prototype.getById = function(key, callback) {
-		this.connection.get(key, function(error, record) {
+	Connection.prototype.getById = function(id, callback) {
+		this.connection.get(id, function(error, record) {
 			if (error && error.name !== 'NotFoundError') {
 				return callback(error);
 			}
