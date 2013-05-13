@@ -108,6 +108,10 @@ var createConnection = function(dbPath) {
 	};
 
 	Connection.prototype.getAll = function(callback) {
+		if (!_.isFunction(callback)) {
+			throw new Error('Invalid arguments.');
+		}
+
 		var allRecords = [];
 		this.connection.createValueStream()
 			.on('error', function(error) {
