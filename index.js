@@ -108,6 +108,126 @@ var createConnection = function(dbPath) {
 			});
 	};
 
+	Connection.prototype.update = function(record, callback) {
+		if (!_.isObject(record) || !record.id) {
+			var invalidArgsError = new Error('Invalid arguments.');
+			if (callback) {
+				return callback(invalidArgsError);
+			} else {
+				throw invalidArgsError;
+			}
+		}
+
+		var that = this;
+		this.exists(record.id, function(error, exists) {
+			if (error) {
+				if (callback) {
+					return callback(error);
+				} else {
+					throw error;
+				}
+			}
+			if (!exists) {
+				var recordNotFoundError = new Error('Record not found.');
+				if (callback) {
+					return callback(recordNotFoundError);
+				} else {
+					throw recordNotFoundError;
+				}
+			}
+
+			that.connection.put(record.id, record, function(error) {
+				if (error) {
+					if (callback) {
+						return callback(error);
+					} else {
+						throw error;
+					}
+				}
+
+				that.getById(record.id, function(error, record) {
+					if (error) {
+						if (callback) {
+							return callback(error);
+						} else {
+							throw error;
+						}
+					}
+
+					if (callback) callback(null, record);
+				});
+			});
+		});
+	};
+
+	Connection.prototype.delete = function(id, callback) {
+		if (!_.isString(id)) {
+			var invalidArgsError = new Error('Invalid arguments.');
+			if (callback) {
+				return callback(invalidArgsError);
+			} else {
+				throw invalidArgsError;
+			}
+		}
+
+		var that = this;
+		this.exists(id, function(error, exists) {
+			if (error) {
+				if (callback) {
+					return callback(error);
+				} else {
+					throw error;
+				}
+			}
+			if (!exists) {
+				var recordNotFoundError = new Error('Record not found.');
+				if (callback) {
+					return callback(recordNotFoundError);
+				} else {
+					throw recordNotFoundError;
+				}
+			}
+
+			that.connection.del(id, function(error) {
+				if (error) {
+					if (callback) {
+						return callback(error);
+					} else {
+						throw error;
+					}
+				}
+
+				if (callback) callback(null, true);
+			});
+		});
+	};
+
+	Connection.prototype.exists = function(id, callback) {
+		if (!_.isString(id) || !_.isFunction(callback)) {
+			var invalidArgsError = new Error('Invalid arguments.');
+			if (callback) {
+				return callback(invalidArgsError);
+			} else {
+				throw invalidArgsError;
+			}
+		};
+
+		this.getById(id, function(error, record) {
+			if (error) {
+				if (callback) {
+					return callback(error);
+				} else {
+					throw error;
+				}
+			}
+			if (!record) {
+				return callback(null, false);
+			}
+
+			callback(null, true);
+		});
+	};
+
 	connection = new Connection(dbPath);
 	connection.open();
 	return connection;
