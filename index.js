@@ -72,7 +72,7 @@ var createConnection = function(dbPath) {
 			});
 
 		// Get one record by ID
-		} else if ((_.isString(query) || _.has(query, 'id')) && _.isFunction(callback)) {
+		} else if ((_.isString(query) || _.isNumber(id) || _.has(query, 'id')) && _.isFunction(callback)) {
 			var id = query.id || query;
 			this.getById(id, function(error, record) {
 				if (error) return callback(error);
@@ -177,7 +177,7 @@ var createConnection = function(dbPath) {
 	};
 
 	Connection.prototype.delete = function(id, callback) {
-		if (!_.isString(id)) {
+		if (!_.isString(id) && !_.isNumber(id)) {
 			var invalidArgsError = new Error('Invalid arguments.');
 			if (callback) {
 				return callback(invalidArgsError);
@@ -219,7 +219,7 @@ var createConnection = function(dbPath) {
 	};
 
 	Connection.prototype.exists = function(id, callback) {
-		if (!_.isString(id) || !_.isFunction(callback)) {
+		if ((!_.isString(id) && !_.isNumber(id)) || !_.isFunction(callback)) {
 			var invalidArgsError = new Error('Invalid arguments.');
 			if (callback) {
 				return callback(invalidArgsError);
