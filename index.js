@@ -72,7 +72,7 @@ var createConnection = function(dbPath) {
 			});
 
 		// Get one record by ID
-		} else if ((_.isString(query) || _.isNumber(id) || _.has(query, 'id')) && _.isFunction(callback)) {
+		} else if ((_.isString(query) || _.isNumber(query) || _.has(query, 'id')) && _.isFunction(callback)) {
 			var id = query.id || query;
 			this.getById(id, function(error, record) {
 				if (error) return callback(error);
@@ -107,10 +107,6 @@ var createConnection = function(dbPath) {
 	};
 
 	Connection.prototype.getAll = function(callback) {
-		if (!_.isFunction(callback)) {
-			throw new Error('Invalid arguments.');
-		}
-
 		var allRecords = [];
 		this.connection.createValueStream()
 			.on('error', function(error) {

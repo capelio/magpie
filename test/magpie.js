@@ -17,15 +17,20 @@ var theOatmealBook = {
 	author: "TheOatmeal.com"
 };
 
-var bookWithId = {
+var bookWithStringId = {
 	id: "978-1449410247"
 };
-bookWithId = _.merge(theOatmealBook, bookWithId);
+bookWithStringId = _.merge(bookWithStringId, theOatmealBook);
+
+var bookWithNumberId = {
+	id: 100
+};
+bookWithNumberId = _.merge(bookWithNumberId, theOatmealBook);
 
 var updatedBook = {
 	isbn10: "1449410243"
 };
-updatedBook = _.merge(bookWithId, updatedBook);
+updatedBook = _.merge(updatedBook, bookWithStringId);
 
 /**
  * Tests
@@ -53,14 +58,24 @@ describe('Magpie', function() {
 
 		it('should create an ID when one is not provided', function(done) {
 			db.create(theOatmealBook, function(error, record) {
+				if (error) throw error;
 				record.should.have.property('id');
 				done();
 			});
 		});
 
-		it('should use an existing ID when one is provided', function(done) {
-			db.create(bookWithId, function(error, record) {
-				record.should.have.property('id', bookWithId.id);
+		it('should use an existing string ID when one is provided', function(done) {
+			db.create(bookWithStringId, function(error, record) {
+				if (error) throw error;
+				record.should.have.property('id', bookWithStringId.id);
+				done();
+			});
+		});
+
+		it('should use an existing number ID when one is provided', function(done) {
+			db.create(bookWithNumberId, function(error, record) {
+				if (error) throw error;
+				record.should.have.property('id', bookWithNumberId.id);
 				done();
 			});
 		});
@@ -73,8 +88,9 @@ describe('Magpie', function() {
 		//   to test when there is as well as when there isn't a callback?
 
 		it('should return a record when querying for an ID as a string', function(done) {
-			db.get(bookWithId.id, function(error, record) {
-				record.should.have.property('id', bookWithId.id);
+			db.get(bookWithStringId.id, function(error, record) {
+				if (error) throw error;
+				record.should.have.property('id', bookWithStringId.id);
 				done();
 			});
 		});
@@ -87,10 +103,18 @@ describe('Magpie', function() {
 			});
 		});
 
-		it('should return a record when querying for an ID on a query object', function(done) {
-			db.get({id: bookWithId.id}, function(error, record) {
+		it('should return a record when querying for an ID as a number', function(done) {
+			db.get(bookWithNumberId.id, function(error, record) {
 				if (error) throw error;
-				record.should.have.property('id', bookWithId.id);
+				record.should.have.property('id', bookWithNumberId.id);
+				done();
+			});
+		});
+
+		it('should return a record when querying for an ID on a query object', function(done) {
+			db.get({id: bookWithStringId.id}, function(error, record) {
+				if (error) throw error;
+				record.should.have.property('id', bookWithStringId.id);
 				done();
 			});
 		});
