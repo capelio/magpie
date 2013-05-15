@@ -71,11 +71,11 @@ db.get("7f5d532b-8bfe-42fd-a1d3-8272e8aa7e3f", function(error, record) {
 });
 ```
 
-Get a record by ID using a query object:
+Get records by author using a query object:
 
-```
+```js
 var query = {
-	id: "7f5d532b-8bfe-42fd-a1d3-8272e8aa7e3f"
+	author: "TheOatmeal.com"
 };
 db.get(query, function(error, record) {
 	// Returns:
@@ -118,6 +118,8 @@ db.update(theOatmealBook, function(error, record) {
 ### db.getById(id _string_, callback);
 
 ### db.getAll(callback);
+
+### db.getByQuery(query _object_, callback);
 
 License
 -------

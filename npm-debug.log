@@ -1,0 +1,27 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'node',
+1 verbose cli   '/Users/ccapel/.nvm/v0.10.4/bin/npm',
+1 verbose cli   'version',
+1 verbose cli   '0.0.4' ]
+2 info using npm@1.2.19
+3 info using node@v0.10.4
+4 error Error: Git working directory not clean.
+4 error M README.md
+4 error M index.js
+4 error     at /Users/ccapel/.nvm/v0.10.4/lib/node_modules/npm/lib/version.js:85:33
+4 error     at ChildProcess.exithandler (child_process.js:630:7)
+4 error     at ChildProcess.EventEmitter.emit (events.js:98:17)
+4 error     at maybeClose (child_process.js:730:16)
+4 error     at Socket.<anonymous> (child_process.js:943:11)
+4 error     at Socket.EventEmitter.emit (events.js:95:17)
+4 error     at Pipe.close (net.js:451:12)
+5 error If you need help, you may report this log at:
+5 error     <http://github.com/isaacs/npm/issues>
+5 error or email it to:
+5 error     <npm-@googlegroups.com>
+6 error System Darwin 12.3.0
+7 error command "node" "/Users/ccapel/.nvm/v0.10.4/bin/npm" "version" "0.0.4"
+8 error cwd /Users/ccapel/Code/Magpie
+9 error node -v v0.10.4
+10 error npm -v 1.2.19
+11 verbose exit [ 1, true ]

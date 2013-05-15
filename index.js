@@ -81,7 +81,10 @@ var createConnection = function(dbPath) {
 
 		// Get records using query object
 		} else if ((!_.has(query, 'id') && !_.isEmpty(query)) && _.isFunction(callback)) {
-			callback(new Error('Get using query object not yet implemented.'));
+			this.getByQuery(query, function(error, records) {
+				if (error) return callback(error);
+				callback(null, records);
+			});
 
 		// Invalid arguments
 		} else {
@@ -117,6 +120,31 @@ var createConnection = function(dbPath) {
 			})
 			.on('end', function() {
 				callback(null, allRecords);
+			});
+	};
+
+	Connection.prototype.getByQuery = function(query, callback) {
+		var matchedRecords = [];
+		var keysToMatch = _.keys(query);
+
+		function hasKeysAndValues(keys, source, target) {
+			var isMatch = _.all(keys, function(key) {
+				return source[key] === target[key];
+			});
+			return isMatch;
+		};
+
+		this.connection.createValueStream()
+			.on('error', function(error) {
+				callback(error);
+			})
+			.on('data', function(record) {
+				if (hasKeysAndValues(keysToMatch, query, record)) {
+					matchedRecords.push(record);
+				}
+			})
+			.on('end', function() {
+				callback(null, matchedRecords);
 			});
 	};
 
