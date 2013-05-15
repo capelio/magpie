@@ -1,6 +1,6 @@
 {
   "name": "magpie",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Simple persistence for rapid prototyping. Powered by levelup.",
   "main": "index.js",
   "scripts": {
