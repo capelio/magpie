@@ -3,9 +3,6 @@
   "version": "1.0.0",
   "description": "Simple persistence for rapid prototyping",
   "main": "index.js",
-  "scripts": {
-    "test": "mocha"
-  },
   "repository": {
     "type": "git",
     "url": "git@github.com:capelio/magpie.git"
@@ -19,13 +16,7 @@
   "bugs": {
     "url": "https://github.com/capelio/magpie/issues"
   },
-  "dependencies": {
-    "levelup": "~0.8.0",
-    "lodash": "~1.2.1",
-    "node-uuid": "~1.4.0"
-  },
-  "devDependencies": {
-    "mocha": "~1.9.0",
-    "should": "~1.2.2"
-  }
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {}
 }
