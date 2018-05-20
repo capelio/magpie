@@ -1,7 +1,7 @@
 {
   "name": "magpie",
-  "version": "0.0.4",
-  "description": "Simple persistence for rapid prototyping. Powered by levelup.",
+  "version": "1.0.0",
+  "description": "Simple persistence for rapid prototyping",
   "main": "index.js",
   "scripts": {
     "test": "mocha"
@@ -12,13 +12,7 @@
   },
   "keywords": [
     "db",
-    "database",
-    "datastore",
-    "store",
-    "storage",
-    "json",
-    "levelup",
-    "leveldb"
+    "database"
   ],
   "author": "C. Corey Capel",
   "license": "MIT",
