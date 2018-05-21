@@ -32,9 +32,8 @@ function wrapCollection(collection) {
       return baseRecord;
     },
 
-    search(query = {}) {
-      const { count = 25, where = {} } = query;
-
+    search(options = {}) {
+      const { count = 25, where = {} } = options;
       const records = [];
 
       const txn = env.beginTxn();
