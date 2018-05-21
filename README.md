@@ -1,132 +1,94 @@
-Magpie
-======
+<p align="center">
+  <img src="http://www.capelio.com/images/magpie.jpg">
+</p>
 
-Simple persistence for rapid prototyping. Powered by [levelup](https://github.com/rvagg/node-levelup).
+Rationale
+---------
 
-![magpie image](http://www.capelio.com/images/magpie.png)
+When iterating over a new user experience, at a certain point it becomes valuable to be able to persist data. The effort to setup and maintain a proper database, however, can be burdensome. That's where Magpie comes in. Simply install the module and use it. Magpie takes care of creating a file-based database on disk and providing an API that covers the majority of database use cases.
 
-This is my first Node.js module. Currently, the module is in the very early stages of development. Implementation of the API is ongoing. **Take note: this module is NOT production ready.**
-
-Basic usage
+Basic Usage
 -----------
 
 ```js
-var magpie = require('magpie'),
-	db = magpie('./db');
+import Magpie from 'magpie'
 
-var theOatmealBook = {
-	title: "How to Tell If Your Cat Is Plotting to Kill You",
-	author: "TheOatmeal.com"
-};
+const db = Magpie()
+const books = db.collection('books')
 
-db.create(theOatmealBook, function(error, record) {
-	// Returns:
-	// {
-	//   "id": "7f5d532b-8bfe-42fd-a1d3-8272e8aa7e3f",
-	//   "title": "How to Tell If Your Cat Is Plotting to Kill You",
-	//   "author": "TheOatmeal.com",
-	//   "createdOn": "2013-05-10T20:30:25.342Z"
-	// }
-});
+books.put({
+  title: "How to Tell If Your Cat Is Plotting to Kill You",
+  author: "TheOatmeal.com"
+})
+
+// Returns the created record. Note the ID and createdAt timestamp.
+{
+  "id": "01CE0X4JTP6A87C3703VVN8WGZ",
+  "title": "How to Tell If Your Cat Is Plotting to Kill You",
+  "author": "TheOatmeal.com",
+  "createdAt": "2018-05-10T20:30:25.342Z"
+}
 ```
 
 API
 ---
 
-### var db = magpie(path _string_ [, options]);
+### const db = Magpie([options _object_])
 
-### db.create(data _object_ [, callback]);
+### const collection = db.collection(name _string_)
 
-Magpie is happy to generate IDs for you via [node-uuid's](https://github.com/broofa/node-uuid) `uuid.v4()` method. If you'd like to supply your own IDs, go for it. Just include an `id` property on your `data` object.
+### collection.put(record _object_)
 
-### db.get([id _string_ | query _object_, ] callback);
+The `put` method works like an `UPSERT` from the SQL world. In short, if your record has an `id` key, Magpie will `update` the existing record. If you record lacks an `id` key, Magpie will create an entirely new record instead.
 
-Get all records:
+Magpie will generate IDs for you via the [ulid](https://www.npmjs.com/package/ulid) module. If you'd like to supply your own IDs, go for it. Just include an `id` property on your record.
 
-```js
-db.get(function(error, records) {
-	// Returns:
-	[{
-	  "id": "7f5d532b-8bfe-42fd-a1d3-8272e8aa7e3f",
-	  "title": "How to Tell If Your Cat Is Plotting to Kill You",
-	  "author": "TheOatmeal.com",
-	  "createdOn": "2013-05-10T20:30:25.342Z"
-	}, {
-	  ...
-	}]
-});
-```
-
-Get a record by ID:
+When updating, you can update as few or as many properties as you'd like.
 
 ```js
-db.get("7f5d532b-8bfe-42fd-a1d3-8272e8aa7e3f", function(error, record) {
-	// Returns:
-	{
-	  "id": "7f5d532b-8bfe-42fd-a1d3-8272e8aa7e3f",
-	  "title": "How to Tell If Your Cat Is Plotting to Kill You",
-	  "author": "TheOatmeal.com",
-	  "createdOn": "2013-05-10T20:30:25.342Z"
-	}
-});
-```
+books.put({
+  "id": "01CE0X4JTP6A87C3703VVN8WGZ",
+  "isbn10": "1449410243"
+})
 
-Get records by author using a query object:
-
-```js
-var query = {
-	author: "TheOatmeal.com"
-};
-db.get(query, function(error, record) {
-	// Returns:
-	{
-		"id": "7f5d532b-8bfe-42fd-a1d3-8272e8aa7e3f",
-		"title": "How to Tell If Your Cat Is Plotting to Kill You",
-		"author": "TheOatmeal.com",
-		"createdOn": "2013-05-10T20:30:25.342Z"
-	}
-});
-```
-
-### db.update(data _object_ [, callback]);
-
-```js
-var theOatmealBook = {
-	"id": "7f5d532b-8bfe-42fd-a1d3-8272e8aa7e3f",
-	"title": "How to Tell If Your Cat Is Plotting to Kill You",
-	"author": "TheOatmeal.com",
-	"isbn10": "1449410243",
-	"createdOn": "2013-05-10T20:30:25.342Z"
+// Returns the updated record. Note the new updatedAt property.
+{
+  "id": "01CE0X4JTP6A87C3703VVN8WGZ",
+  "title": "How to Tell If Your Cat Is Plotting to Kill You",
+  "author": "TheOatmeal.com",
+  "isbn10": "1449410243",
+  "createdAt": "2018-05-10T20:30:25.342Z",
+  "updatedAt": "2018-05-11T12:45:50.700Z"
 }
-db.update(theOatmealBook, function(error, record) {
-	// Returns
-	{
-		"id": "7f5d532b-8bfe-42fd-a1d3-8272e8aa7e3f",
-		"title": "How to Tell If Your Cat Is Plotting to Kill You",
-		"author": "TheOatmeal.com",
-		"isbn10": "1449410243",
-		"createdOn": "2013-05-10T20:30:25.342Z",
-		"updatedOn": "2013-05-11T12:45:50.700Z"
-	}
 });
 ```
 
-### db.delete(id _string_ | query _object_ [, callback]);
+### collection.get(id _string_)
 
-### db.exists(id _string_, callback);
+```js
+books.get("01CE0X4JTP6A87C3703VVN8WGZ")
 
-### db.getById(id _string_, callback);
+// Returns:
+{
+  "id": "01CE0X4JTP6A87C3703VVN8WGZ",
+  "title": "How to Tell If Your Cat Is Plotting to Kill You",
+  "author": "TheOatmeal.com",
+  "createdAt": "2018-05-10T20:30:25.342Z",
+  "updatedAt": "2018-05-11T12:45:50.700Z"
+}
+});
+```
 
-### db.getAll(callback);
+### collection.search([options _object_])
 
-### db.getByQuery(query _object_, callback);
+### collection.delete(id _string_);
 
 License
 -------
 
 The MIT License (MIT)
 
-Copyright (c) 2013 C. Corey Capel
+Copyright (c) 2013 to Present C. Corey Capel
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
