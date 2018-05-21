@@ -16,7 +16,23 @@
   "bugs": {
     "url": "https://github.com/capelio/magpie/issues"
   },
-  "dependencies": {},
-  "devDependencies": {},
-  "scripts": {}
+  "dependencies": {
+    "app-module-path": "^2.2.0",
+    "esm": "^3.0.36",
+    "lodash": "^4.17.10",
+    "node-lmdb": "^0.6.0",
+    "ulid": "^2.3.0"
+  },
+  "devDependencies": {
+    "husky": "^0.14.3",
+    "precise-commits": "^1.0.2",
+    "prettier": "^1.12.1",
+    "standard": "^11.0.1",
+    "tap-dot": "^1.0.5",
+    "tape": "^4.9.0"
+  },
+  "scripts": {
+    "precommit": "precise-commits",
+    "test": "tape -r esm test/{*,**/*}.test.js | tap-dot"
+  }
 }
