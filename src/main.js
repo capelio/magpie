@@ -43,7 +43,7 @@ function wrapCollection(collection) {
         id !== null && records.length !== count;
         id = cursor.goToNext()
       ) {
-        const record = JSON.parse(txn.getString(collection, id));
+        const record = JSON.parse(cursor.getCurrentString());
         if (_.isMatch(record, where)) records.push(record);
       }
       txn.commit();
