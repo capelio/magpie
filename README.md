@@ -60,7 +60,6 @@ books.put({
   "createdAt": "2018-05-10T20:30:25.342Z",
   "updatedAt": "2018-05-11T12:45:50.700Z"
 }
-});
 ```
 
 ### collection.get(id _string_)
@@ -76,7 +75,6 @@ books.get("01CE0X4JTP6A87C3703VVN8WGZ")
   "createdAt": "2018-05-10T20:30:25.342Z",
   "updatedAt": "2018-05-11T12:45:50.700Z"
 }
-});
 ```
 
 ### collection.search([options _object_])
