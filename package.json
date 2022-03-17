@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "levelup": "~0.8.0",
-    "lodash": "~1.2.1",
+    "lodash": "~4.17.19",
     "node-uuid": "~1.4.0"
   },
   "devDependencies": {
